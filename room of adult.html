@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Room Of Adult</title>
+    <link rel="icon" type="image/png" href="images/logoo-removebg-preview.png">
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 2px dashed red; 
+}
+.navbar-container {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 1400px;
+      z-index: 1000;
+      animation: ribbonOpen 2.2s ease forwards;
+      opacity: 0;
+      font-family: 'Cormorant Garamond', serif;
+    }
+#navbar {
+  transition: top 0.4s ease-in-out;
+}
+
+    @keyframes ribbonOpen {
+      0% {
+        width: 0;
+        opacity: 0;
+        clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
+      }
+      100% {
+        width: 100%;
+        opacity: 1;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      }
+    }
+
+    .navbar {
+      background: linear-gradient(to right, rgba(255, 221, 153, 0.18) 15%, rgba(3, 3, 3, 0.85));
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 6px 20px rgba(255,255,255,0.05);
+      height: 70px;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .logo img {
+      height: 120px;
+      width: 200px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+    }
+
+    .nav-links a {
+      color: #e8e8e8;
+      text-decoration: none;
+      font-size: 20px;
+      position: relative;
+      transition: all 0.4s ease;
+      letter-spacing: 1px;
+    }
+
+    .nav-links a:hover {
+      color: #ffdd99;
+      text-shadow: 0 0 6px #ccc, 0 0 12px #bbb, 0 0 18px #aaa, 0 0 25px rgba(255, 255, 255, 0.3);
+      transform: scale(1.12) translateY(-2px);
+    }
+
+    .icon {
+      font-size: 22px;
+      color: #ddd;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .icon:hover {
+      color: #ffdd99;
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 0 10px  #ffdd99;
+    }
+
+    .chatbot {
+      position: fixed;
+      bottom: 80px;
+      right: 25px;
+      width: 300px;
+      max-height: 400px;
+      background: #1a1a1a;
+      color: #eee;
+      border: 1px solid #605f5e;
+      border-radius: 10px;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 0 15px #605f5e;
+      z-index: 9999;
+      font-family: 'Georgia', serif;
+    }
+
+    .chat-header {
+      padding: 10px;
+      background: #605f5e;
+      font-weight: bold;
+      text-align: center;
+      font-style: italic;
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #444;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 8px;
+      background: #111;
+      color: white;
+      border: none;
+      outline: none;
+    }
+
+    .chat-input button {
+      background: #605f5e;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .user-msg, .bot-msg {
+      margin: 5px 0;
+      padding: 6px 10px;
+      border-radius: 6px;
+      max-width: 85%;
+    }
+
+    .user-msg {
+      background: #2e2e2e;
+      align-self: flex-end;
+      color: #ccc;
+      text-align: right;
+    }
+
+    .bot-msg {
+      background: #333;
+      align-self: flex-start;
+      color: #eee;
+      font-style: italic;
+    }
+
+    .fade-in-btn {
+      opacity: 0;
+      animation: fadeInButton 2s ease 4s forwards;
+    }
+
+    @keyframes fadeInButton {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .menu-toggle {
+      display: none;
+    }
+
+  @media (max-width: 768px) {
+  .navbar {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 7px;
+  }
+
+  .logo {
+    width: 0px;
+  }
+
+  .logo img {
+    height: 55px;
+    width: 100px;
+  }
+
+  .nav-links {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 10px 10px 0 10px;
+    background: transparent;
+    position: static;
+    width: auto;
+    box-shadow: none;
+  }
+
+  .nav-links a {
+    font-size: 10px;
+    text-align: center;
+  }
+
+  .desktop-chat {
+    display: none;
+  }
+
+  #mobileChat {
+    display: block;
+  }
+
+  
+  .navbar {
+    height: 50px;
+  }
+
+  
+  .icon {
+    font-size: 16px;
+    padding: 5px 8px;
+  }
+}
+
+  @media (min-width: 769px) {
+    #mobileChat {
+      display: none;
+    }
+   
+  }
+  
+    .video-section, .second-video-section {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none; 
+    }
+
+    .title {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      color: #ffdd99;
+      font-size: 3rem;
+      text-shadow: 0 0 10px #000, 0 0 20px #333, 0 0 30px #000;
+      opacity: 0;
+      font-style: italic;
+      animation: cinematicFadeIn 5s ease-in-out forwards 1s;
+      z-index: 2;
+      letter-spacing: 2.5px;
+      text-align: center;
+       text-shadow: 0 0 12px #ad9474, 0 0 20px #fcfaf6;
+    }
+
+    @keyframes cinematicFadeIn {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.6) translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) translateY(0);
+      }
+    }
+
+    .hide {
+      opacity: 0;
+      pointer-events: none;
+      transition: all 1s ease;
+    }
+
+    .second-video-section {
+     display: none;
+  z-index: 0;
+    }
+
+   .quotes-container {
+  position: absolute;
+  top: 55%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 40px;
+  z-index: 2;
+  padding: 100px 70px; 
+  max-width: 800px; 
+}
+
+.second-video-section video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+
+
+    .window {
+      width: 20%;
+      min-width: 250px;
+      max-width: 350px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      position: relative;
+      perspective: 1000px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.05), 0 0 40px rgba(0,0,0,0.6);
+      transition: all 0.3s ease-in-out;
+      overflow: hidden;
+    }
+
+    .door {
+      position: absolute;
+      width: 50%;
+      height: 100%;
+      top: 0;
+      background: rgba(255,255,255,0.1);
+      transform-origin: center left;
+      transform: rotateY(0deg);
+      transition: transform 2.5s ease;
+      backface-visibility: hidden;
+      background-image: url('images/w 3.jpeg');
+      background-size: cover;
+      background-position: center;
+      z-index: 2;
+    }
+
+    .door.right {
+      left: 50%;
+      transform-origin: center right;
+    }
+
+    .window.opened .door.left {
+      transform: rotateY(-140deg);
+    }
+
+    .window.opened .door.right {
+      transform: rotateY(140deg);
+    }
+
+    .quote-text {
+      color: #ffdd99;
+      font-size: 1.1rem;
+      opacity: 0;
+      text-align: center;
+      padding: 20px;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 90%;
+      transform: translate(-50%, -50%) translateY(20px);
+      z-index: 1;
+       text-shadow: 0 0 12px #ffcc88, 0 0 20px #ffdd99;
+    }
+
+    .window.opened .quote-text {
+      opacity: 1;
+      transform: translate(-50%, -50%) translateY(0);
+    }
+
+    .second-video-section video {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+    }
+@media (max-width: 1024px) {
+  .quotes-container {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    padding: 20px 10px 160px;
+    margin-top: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .window {
+    width: 90%;
+    height: 180px;
+    margin: 0 auto;
+  }
+
+  
+  .action-message {
+    position: relative !important; 
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin: 20px auto;
+    text-align: center;
+    width: 100%;
+    order: 2;
+  }
+
+  
+  .action-buttons {
+    position: relative !important; 
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin: 10px auto 30px;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    justify-content: center; 
+    align-items: center;
+    order: 3;
+  }
+
+  .action-buttons .book-button,
+  .action-buttons .back-button {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    min-width: 120px;
+    text-align: center;
+  }
+}
+
+
+    .room-heading {
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+   color: #ffdd99;
+  font-size: 3rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  z-index: 2;
+  text-shadow: 0 0 10px #000;
+  font-family: 'Georgia', serif;
+  text-align: center;
+   text-shadow: 0 0 12px #ffcc88, 0 0 20px #ffdd99;
+  
+}
+
+.action-message {
+  position: absolute;
+  bottom: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  color: #ffdd99;
+  font-size: 1.1rem;
+  font-style: italic;
+  font-family: 'Georgia', serif;
+  text-align: center;
+  width: 90%;
+  max-width: 700px;
+  text-shadow: 0 0 12px #ffcc88, 0 0 20px #ffdd99;
+}
+
+.action-buttons {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.book-button, .back-button {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffdd99;
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 9px 10px;
+  font-size: 1rem;
+  font-family: 'Georgia', serif;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(3px);
+   text-shadow: 0 0 12px #ffcc88, 0 0 20px #ffdd99;
+}
+
+.book-button:hover, .back-button:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+   text-shadow: 0 0 12px #ffcc88, 0 0 20px #ffdd99;
+}
+  </style>
+</head>
+<body>
+
+  
+  <div class="video-section" id="firstSection">
+    <video autoplay muted loop playsinline>
+      <source src="images/walk.mp4" type="video/mp4">
+    </video>
+    <div class="title" id="titleText">Every step leads deeper into your past</div>
+  </div>
+<main>
+
+  <div class="second-video-section" id="secondSection">
+    <video autoplay muted loop playsinline>
+      <source src="images/adult vdieo.mp4" type="video/mp4">
+    </video>
+ <div class="navbar-container" id="navbar">
+    <div class="navbar">
+     <div class="logo">
+  <a href="index.html"> 
+    <img src="images/logoo-removebg-preview.png" alt="Logo" />
+  </a>
+</div>
+    
+      <div class="nav-links" id="navLinks">
+         <div class="menu-toggle" id="menuToggle">☰</div>
+        <a href="./index.html">HOME</a>
+        <a href="./about.html">ABOUT</a>
+        <a href="./contact.html">CONTACT</a>
+         <a href="#" id="mobileChat" class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 64 64" width="28" height="28">
+            <path d="M32 6c-14.3 0-26 11.7-26 26v10c0 2.2 1.8 4 4 4h6v-14H10v-0.1C10 19.6 19.6 10 32 10s22 9.6 22 21.9V32h-6v14h6c2.2 0 4-1.8 4-4V32c0-14.3-11.7-26-26-26z"/>
+            <circle cx="24" cy="36" r="3" fill="#fff"/>
+            <circle cx="40" cy="36" r="3" fill="#fff"/>
+            <path d="M28 46c2.2 2.2 5.8 2.2 8 0" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
+        </a>
+      </div>
+     
+      <div class="icon desktop-chat" id="chatIcon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 64 64" width="28" height="28">
+          <path d="M32 6c-14.3 0-26 11.7-26 26v10c0 2.2 1.8 4 4 4h6v-14H10v-0.1C10 19.6 19.6 10 32 10s22 9.6 22 21.9V32h-6v14h6c2.2 0 4-1.8 4-4V32c0-14.3-11.7-26-26-26z"/>
+          <circle cx="24" cy="36" r="3" fill="#fff"/>
+          <circle cx="40" cy="36" r="3" fill="#fff"/>
+          <path d="M28 46c2.2 2.2 5.8 2.2 8 0" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="chatbot" id="chatbot">
+    <div class="chat-header">🤖 Regret Assistant</div>
+    <div class="chat-body" id="chatBody">
+      <div class="bot-msg">Welcome to the Regret Museum. What weighs on your soul today?</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Share a thought...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+<div class="quotes-container">
+
+  <div class="window" onclick="toggleWindow(this)">
+    <div class="door left"></div>
+    <div class="door right"></div>
+    <div class="quote-text">"One window, many views, one truth."</div>
+  </div>
+
+  <div class="window" onclick="toggleWindow(this)">
+    <div class="door left"></div>
+    <div class="door right"></div>
+    <div class="quote-text">"Every silent thought becomes a future echo."</div>
+  </div>
+
+  <div class="window" onclick="toggleWindow(this)">
+    <div class="door left"></div>
+    <div class="door right"></div>
+    <div class="quote-text">"Dreams die not with age, but with silence."</div>
+  </div>
+
+  <div class="window" onclick="toggleWindow(this)">
+    <div class="door left"></div>
+    <div class="door right"></div>
+    <div class="quote-text">"The past never forgets what we tried to."</div>
+  </div>
+
+  
+  <br><div class="action-message">
+    <p>If the weight of this room still lingers, let the next page whisper louder…</p>
+  </div>
+
+  <div class="action-buttons">
+    <button class="book-button">Buy This Book</button>
+    <button class="back-button">Back to the Museum</button>
+  </div>
+
+</div>
+
+  <script>
+   
+    setTimeout(() => {
+      document.getElementById('firstSection').classList.add('hide');
+      document.getElementById('secondSection').style.display = 'block';
+    }, 6000);
+
+    function toggleWindow(el) {
+    
+      el.classList.toggle('opened');
+
+     
+      const quote = el.querySelector('.quote-text');
+
+      if (el.classList.contains('opened')) { setTimeout(() => {
+          quote.style.opacity = '1';
+        }, 600);
+      } else {
+   quote.style.opacity = '0';
+      }
+    }
+
+
+    document.querySelector('.back-button').addEventListener('click', function() {
+  window.location.href = "map.html"; 
+});
+
+document.querySelector('.book-button').addEventListener('click', function() {
+  window.location.href = "adult.html"; 
+  
+});
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+      const menuToggle = document.getElementById("menuToggle");
+      const navLinks = document.getElementById("navLinks");
+
+      menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+      });
+
+      const chatbot = document.getElementById("chatbot");
+      const chatIcon = document.getElementById("chatIcon");
+      const chatBody = document.getElementById("chatBody");
+      const userInput = document.getElementById("userInput");
+      const mobileChat = document.getElementById("mobileChat");
+
+      chatIcon.addEventListener("click", () => {
+        chatbot.style.display = chatbot.style.display === "flex" ? "none" : "flex";
+      });
+
+      mobileChat.addEventListener("click", (e) => {
+        e.preventDefault();
+        chatbot.style.display = chatbot.style.display === "flex" ? "none" : "flex";
+        navLinks.classList.remove("active");
+      });
+
+      window.sendMessage = function () {
+        const msg = userInput.value.trim();
+        if (!msg) return;
+
+        const userMsg = document.createElement("div");
+        userMsg.className = "user-msg";
+        userMsg.textContent = msg;
+        chatBody.appendChild(userMsg);
+        userInput.value = "";
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        setTimeout(() => {
+          const reply = getBotReply(msg);
+          const botMsg = document.createElement("div");
+          botMsg.className = "bot-msg";
+          botMsg.textContent = reply;
+          chatBody.appendChild(botMsg);
+          chatBody.scrollTop = chatBody.scrollHeight;
+        }, 700);
+      }
+
+      function getBotReply(msg) {
+        const lower = msg.toLowerCase();
+        if (lower.includes("regret")) return "Some regrets echo louder than others.";
+        if (lower.includes("life")) return "Life is a fading chapter, full of silent pages.";
+        if (lower.includes("love")) return "Love in youth burns bright, but often leaves ashes.";
+        if (lower.includes("dream")) return "Dreams often outgrow the people who dreamed them.";
+        if (lower.includes("lost") || lower.includes("pain")) return "Sometimes we lose ourselves trying to find others.";
+        if (lower.includes("help")) return "I'm here. Whisper anything you couldn't say back then.";
+        return "Every whisper matters in the museum of memories.";
+      }
+    });
+ let lastScrollTop = 0;
+  const navbar = document.getElementById("navbar");
+
+  window.addEventListener("scroll", function () {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (scrollTop > lastScrollTop) {
+      navbar.style.top = "-100px"; 
+    } else {
+      navbar.style.top = "0"; 
+    }
+
+    lastScrollTop = scrollTop;
+  });
+  </script>
+
+</body>
+</html>

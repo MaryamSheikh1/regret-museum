@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About Us - Regret Museum</title>
+   <link rel="icon" type="image/png" href="images/logoo-removebg-preview.png">
+
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    .navbar-container {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 1400px;
+      z-index: 1000;
+      animation: ribbonOpen 2.2s ease forwards;
+      opacity: 0;
+      font-family: 'Cormorant Garamond', serif;
+    }
+#navbar {
+  transition: top 0.4s ease-in-out;
+}
+
+    @keyframes ribbonOpen {
+      0% {
+        width: 0;
+        opacity: 0;
+        clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
+      }
+      100% {
+        width: 100%;
+        opacity: 1;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      }
+    }
+
+    .navbar {
+      background: linear-gradient(to right, rgba(255, 221, 153, 0.18) 15%, rgba(3, 3, 3, 0.85));
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 6px 20px rgba(255,255,255,0.05);
+      height: 70px;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .logo img {
+      height: 120px;
+      width: 200px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+    }
+
+    .nav-links a {
+      color: #e8e8e8;
+      text-decoration: none;
+      font-size: 20px;
+      position: relative;
+      transition: all 0.4s ease;
+      letter-spacing: 1px;
+    }
+
+    .nav-links a:hover {
+      color: #ffdd99;
+      text-shadow: 0 0 6px #ccc, 0 0 12px #bbb, 0 0 18px #aaa, 0 0 25px rgba(255, 255, 255, 0.3);
+      transform: scale(1.12) translateY(-2px);
+    }
+
+    .icon {
+      font-size: 22px;
+      color: #ddd;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .icon:hover {
+      color: #ffdd99;
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 0 10px  #ffdd99;
+    }
+
+    /* Chatbot */
+    .chatbot {
+      position: fixed;
+      bottom: 80px;
+      right: 25px;
+      width: 300px;
+      max-height: 400px;
+      background: #1a1a1a;
+      color: #eee;
+      border: 1px solid #605f5e;
+      border-radius: 10px;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 0 15px #605f5e;
+      z-index: 9999;
+      font-family: 'Georgia', serif;
+    }
+
+    .chat-header {
+      padding: 10px;
+      background: #605f5e;
+      font-weight: bold;
+      text-align: center;
+      font-style: italic;
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #444;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 8px;
+      background: #111;
+      color: white;
+      border: none;
+      outline: none;
+    }
+
+    .chat-input button {
+      background: #605f5e;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .user-msg, .bot-msg {
+      margin: 5px 0;
+      padding: 6px 10px;
+      border-radius: 6px;
+      max-width: 85%;
+    }
+
+    .user-msg {
+      background: #2e2e2e;
+      align-self: flex-end;
+      color: #ccc;
+      text-align: right;
+    }
+
+    .bot-msg {
+      background: #333;
+      align-self: flex-start;
+      color: #eee;
+      font-style: italic;
+    }
+
+    .fade-in-btn {
+      opacity: 0;
+      animation: fadeInButton 2s ease 4s forwards;
+    }
+
+    @keyframes fadeInButton {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .menu-toggle {
+      display: none;
+    }
+
+  @media (max-width: 768px) {
+  .navbar {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 7px;
+  }
+
+  .logo {
+    width: 0px;
+  }
+
+  .logo img {
+    height: 55px;
+    width: 100px;
+  }
+
+  .nav-links {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 10px 10px 0 10px;
+    background: transparent;
+    position: static;
+    width: auto;
+    box-shadow: none;
+  }
+
+  .nav-links a {
+    font-size: 10px;
+    text-align: center;
+  }
+
+  .desktop-chat {
+    display: none;
+  }
+
+  #mobileChat {
+    display: block;
+  }
+
+  
+  .navbar {
+    height: 50px;
+  }
+
+  
+  .icon {
+    font-size: 16px;
+    padding: 5px 8px;
+  }
+}
+
+  @media (min-width: 769px) {
+    #mobileChat {
+      display: none;
+    }
+   
+  }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Libre Baskerville', serif;
+      background-color: #000;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+   
+    .video-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -2;
+      filter: brightness(0.3) contrast(1.2) saturate(0.8);
+      animation: bgMove 90s linear infinite;
+    }
+
+    @keyframes bgMove {
+      0% { transform: scale(1) translateX(0); }
+      100% { transform: scale(1.05) translateX(-40px); }
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(17, 17, 17, 0.6);
+      z-index: -1;
+    }
+
+    .letter {
+      position: relative;
+      width: 90vw;
+      max-width: 720px;
+      height: 0;
+      background: url('https://www.transparenttextures.com/patterns/old-wall.png');
+      background-color: #f7f1df;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), inset 0 0 60px rgba(0,0,0,0.05);
+      border: 2px solid #c5a772;
+      filter: sepia(0.08) drop-shadow(0 0 5px #b89c66);
+      overflow: hidden;
+      animation: unrollOpen 2s ease forwards;
+      margin-top: 47px;
+    }
+
+    @keyframes unrollOpen {
+      from { height: 0; }
+      to { height: 85vh; }
+    }
+
+    .content {
+      padding: 40px 30px;
+      max-height: 80vh;
+      overflow-y: auto;
+      color: #4a3610;
+      opacity: 0;
+      animation: fadeInContent 1s ease 1.5s forwards;
+    }
+
+    @keyframes fadeInContent {
+      to { opacity: 1; }
+    }
+
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 60px;
+      text-align: center;
+      color: #5e3d12;
+      margin-top: 10px;
+      margin-bottom: 25px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      font-size: 26px;
+      color: #6d4f1c;
+      border-bottom: 2px solid #c2a26e;
+      padding-bottom: 6px;
+      margin-top: 25px;
+      margin-bottom: 10px;
+      font-family: 'Great Vibes', cursive;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.8;
+      color: #3b2a0e;
+    }
+
+    ul {
+      padding-left: 20px;
+      font-size: 17px;
+      color: #3b2a0e;
+    }
+
+    ul li {
+      margin-bottom: 6px;
+    }
+
+    .content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .content::-webkit-scrollbar-thumb {
+      background: #c5a772;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 600px) {
+      .content {
+        padding: 25px 20px;
+      }
+      h1 {
+        font-size: 40px;
+      }
+      h2 {
+        font-size: 20px;
+      }
+      p, ul {
+        font-size: 16px;
+      }
+    }
+   
+.animated-footer {
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  background: linear-gradient(to right, rgba(255, 221, 153, 0.18) 15%, rgba(3, 3, 3, 0.85));
+  padding: 7px 0;
+  text-align: center;
+  color: #ddd7b6;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 11px;
+  letter-spacing: 1px;
+  z-index: 999;
+  animation: slideUp 1.8s ease 2.5s forwards;
+  opacity: 0;
+  transform: translateY(100%);
+  box-shadow: 0 -2px 12px rgba(255, 255, 255, 0.05);
+}
+
+.footer-content p {
+  margin: 0;
+  
+   color: white;
+  font-size: 16px;
+  text-shadow: 0 0 5px #ffcc88;
+}
+
+@keyframes slideUp {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+  </style>
+</head>
+<body>
+  <div class="navbar-container" id="navbar">
+    <div class="navbar">
+      <div class="logo">
+  <a href="index.html"> 
+    <img src="images/logoo-removebg-preview.png" alt="Logo" />
+  </a>
+</div>
+
+      <div class="nav-links" id="navLinks">
+         <div class="menu-toggle" id="menuToggle">☰</div>
+        <a href="./index.html">HOME</a>
+        <a href="./about.html">ABOUT</a>
+        <a href="./contact.html">CONTACT</a>
+       <a href="#" id="mobileChat" class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 64 64" width="28" height="28">
+            <path d="M32 6c-14.3 0-26 11.7-26 26v10c0 2.2 1.8 4 4 4h6v-14H10v-0.1C10 19.6 19.6 10 32 10s22 9.6 22 21.9V32h-6v14h6c2.2 0 4-1.8 4-4V32c0-14.3-11.7-26-26-26z"/>
+            <circle cx="24" cy="36" r="3" fill="#fff"/>
+            <circle cx="40" cy="36" r="3" fill="#fff"/>
+            <path d="M28 46c2.2 2.2 5.8 2.2 8 0" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
+        </a>
+      </div>
+     
+      <div class="icon desktop-chat" id="chatIcon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 64 64" width="28" height="28">
+          <path d="M32 6c-14.3 0-26 11.7-26 26v10c0 2.2 1.8 4 4 4h6v-14H10v-0.1C10 19.6 19.6 10 32 10s22 9.6 22 21.9V32h-6v14h6c2.2 0 4-1.8 4-4V32c0-14.3-11.7-26-26-26z"/>
+          <circle cx="24" cy="36" r="3" fill="#fff"/>
+          <circle cx="40" cy="36" r="3" fill="#fff"/>
+          <path d="M28 46c2.2 2.2 5.8 2.2 8 0" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="chatbot" id="chatbot">
+    <div class="chat-header">🤖Regret Assistant</div>
+    <div class="chat-body" id="chatBody">
+      <div class="bot-msg">Welcome to the Regret Museum. What weighs on your soul today?</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Share a thought...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+ 
+  <video autoplay muted loop playsinline class="video-bg">
+    <source src="images/bab.mp4" type="video/mp4" />
+   
+  </video>
+  <div class="overlay"></div>
+
+<div class="letter">
+    <div class="content">
+      <h1>About Us</h1>
+      <p><strong>Welcome to the Regret Museum</strong>, a place that holds stories unspoken and lessons unlearned. Here, every visitor is invited to explore the emotional footprints of regret — not to dwell, but to reflect, grow, and move forward.</p>
+
+      <h2>Our Mission</h2>
+      <p>To preserve stories of regret and lessons learned, inspiring visitors to embrace their past and move forward with hope and wisdom.</p>
+
+      <h2>Our Vision</h2>
+      <p>To create a reflective space that helps individuals understand and learn from their past experiences, fostering growth and self-awareness.</p>
+
+      <h2>Our Team</h2>
+      <ul>
+        <li><strong>Romaisa Iqbal</strong></li>
+        <li><strong>Maryam Sheikh</strong></li>
+      </ul>
+
+      <p style="font-family: 'Great Vibes', cursive; font-size: 30px; text-align: right; margin-top: 30px; color: #5e3d12;">
+        — The Regret Museum
+      </p>
+    </div>
+  </div>
+
+
+<footer class="animated-footer">
+  <div class="footer-content">
+   <br> <p>"This museum was made with thaughts never spoken aloud"</p>
+  </div>
+</footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const menuToggle = document.getElementById("menuToggle");
+      const navLinks = document.getElementById("navLinks");
+
+      menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+      });
+
+      const chatbot = document.getElementById("chatbot");
+      const chatIcon = document.getElementById("chatIcon");
+      const chatBody = document.getElementById("chatBody");
+      const userInput = document.getElementById("userInput");
+      const mobileChat = document.getElementById("mobileChat");
+
+      chatIcon.addEventListener("click", () => {
+        chatbot.style.display = chatbot.style.display === "flex" ? "none" : "flex";
+      });
+
+      mobileChat.addEventListener("click", (e) => {
+        e.preventDefault();
+        chatbot.style.display = chatbot.style.display === "flex" ? "none" : "flex";
+        navLinks.classList.remove("active");
+      });
+
+      window.sendMessage = function () {
+        const msg = userInput.value.trim();
+        if (!msg) return;
+
+        const userMsg = document.createElement("div");
+        userMsg.className = "user-msg";
+        userMsg.textContent = msg;
+        chatBody.appendChild(userMsg);
+        userInput.value = "";
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        setTimeout(() => {
+          const reply = getBotReply(msg);
+          const botMsg = document.createElement("div");
+          botMsg.className = "bot-msg";
+          botMsg.textContent = reply;
+          chatBody.appendChild(botMsg);
+          chatBody.scrollTop = chatBody.scrollHeight;
+        }, 700);
+      }
+
+      function getBotReply(msg) {
+        const lower = msg.toLowerCase();
+        if (lower.includes("regret")) return "Some regrets echo louder than others.";
+        if (lower.includes("life")) return "Life is a fading chapter, full of silent pages.";
+        if (lower.includes("love")) return "Love in youth burns bright, but often leaves ashes.";
+        if (lower.includes("dream")) return "Dreams often outgrow the people who dreamed them.";
+        if (lower.includes("lost") || lower.includes("pain")) return "Sometimes we lose ourselves trying to find others.";
+        if (lower.includes("help")) return "I'm here. Whisper anything you couldn't say back then.";
+        return "Every whisper matters in the museum of memories.";
+      }
+    });
+
+
+
+</script>
+</body>
+</html>

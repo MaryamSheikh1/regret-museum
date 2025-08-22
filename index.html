@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Regret Museum</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="images/logoo-removebg-preview.png">
+  <style>
+.real-door-wrapper {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+  perspective: 1500px;
+}
+
+.real-door {
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 3s ease-in-out;
+}
+
+.real-door img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.real-door.left {
+  background-image: url('.vscode/left doorr.jpg');
+  transform-origin: left center;
+}
+
+.real-door.right {
+  background-image: url('.vscode/right doorr.jpg');
+  transform-origin: right center;
+}
+
+.left-door {
+transform-origin: left;
+
+}
+
+.right-door {
+  transform-origin: right;
+
+}
+.real-door-wrapper {
+  perspective: 1500px;
+}
+
+.open-left {
+  transform: rotateY(-100deg);
+  transition: transform 2.5s ease-in-out;
+}
+
+.open-right {
+  transform: rotateY(100deg);
+  transition: transform 2.5s ease-in-out;
+}
+
+body:not(.museum-opened) .navbar-container,
+body:not(.museum-opened) .text-block,
+body:not(.museum-opened) footer,
+body:not(.museum-opened) .chatbot {
+  display: none;
+}
+
+
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+  
+    .navbar-container {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 1400px;
+      z-index: 1000;
+      animation: ribbonOpen 2.2s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes ribbonOpen {
+      0% {
+        width: 0;
+        opacity: 0;
+        clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
+      }
+      100% {
+        width: 100%;
+        opacity: 1;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      }
+    }
+
+    .navbar {
+      background: linear-gradient(to right, rgba(255, 221, 153, 0.18) 15%, rgba(3, 3, 3, 0.85));
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 6px 20px rgba(255,255,255,0.05);
+      height: 70px;
+    }
+
+    .logo img {
+      height: 120px;
+      width: 200px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+    }
+
+    .nav-links a {
+      color: #e8e8e8;
+      text-decoration: none;
+      font-size: 20px;
+      position: relative;
+      transition: all 0.4s ease;
+      letter-spacing: 1px;
+    }
+
+    .nav-links a:hover {
+      color: #ffdd99;
+      text-shadow: 0 0 6px #ccc, 0 0 12px #bbb, 0 0 18px #aaa, 0 0 25px rgba(255, 255, 255, 0.3);
+      transform: scale(1.12) translateY(-2px);
+    }
+
+    .icon {
+      font-size: 22px;
+      color: #ddd;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .icon:hover {
+      color: #ffdd99;
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 0 10px  #ffdd99;
+    }
+
+ 
+    .chatbot {
+      position: fixed;
+      bottom: 80px;
+      right: 25px;
+      width: 300px;
+      max-height: 400px;
+      background: #1a1a1a;
+      color: #eee;
+      border: 1px solid #605f5e;
+      border-radius: 10px;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 0 15px #605f5e;
+      z-index: 9999;
+      font-family: 'Georgia', serif;
+    }
+
+    .chat-header {
+      padding: 10px;
+      background: #605f5e;
+      font-weight: bold;
+      text-align: center;
+      font-style: italic;
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #444;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 8px;
+      background: #111;
+      color: white;
+      border: none;
+      outline: none;
+    }
+
+    .chat-input button {
+      background: #605f5e;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .user-msg, .bot-msg {
+      margin: 5px 0;
+      padding: 6px 10px;
+      border-radius: 6px;
+      max-width: 85%;
+    }
+
+    .user-msg {
+      background: #2e2e2e;
+      align-self: flex-end;
+      color: #ccc;
+      text-align: right;
+    }
+
+    .bot-msg {
+      background: #333;
+      align-self: flex-start;
+      color: #eee;
+      font-style: italic;
+    }
+
+    .fade-in-btn {
+      opacity: 0;
+      animation: fadeInButton 2s ease 4s forwards;
+    }
+
+    @keyframes fadeInButton {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .menu-toggle {
+      display: none;
+    }
+
+   @media (max-width: 768px) {
+    .navbar {
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 45px 35px;
+      height: 200px;
+    }
+
+    .nav-links {
+      display: flex !important;
+      flex-wrap: wrap;
+      gap: 15px;
+      padding: 10px 10px 0 10px;
+      background: transparent;
+      position: static;
+      width: auto;
+      box-shadow: none;
+    }
+
+    .nav-links a {
+      font-size: 20px ;
+      text-align: center;
+    }
+
+    .desktop-chat {
+      display: none;
+    }
+
+    #mobileChat {
+      display: block;
+    }
+  }
+
+  @media (min-width: 769px) {
+    #mobileChat {
+      display: none;
+    }
+  }
+
+    body {
+      height: 100vh;
+      background-color: #000;
+      font-family: 'Cinzel', serif;
+      overflow: hidden;
+      color: white;
+      position: relative;
+    }
+
+  .scene {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  background-attachment: fixed;
+
+}
+
+
+
+  .background-image {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('images/final dumy.jpeg') center center / cover no-repeat;
+  z-index: -1; 
+  animation: zoomOnly 5s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+
+
+    @keyframes zoomOnly {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.15); }
+    }
+
+    .text-block {
+      position: absolute;
+      top: 5%;
+      left: 20%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 3;
+      max-width: 800px;
+    }
+
+    .text1 {
+      top: 12%;
+      opacity: 0;
+      animation: textMoveIn 2s ease 2s forwards;
+    }
+
+    .text2 {
+      top: 68%;
+      opacity: 0;
+      animation: textMoveIn 2s ease 6s forwards, textOut 1s ease 12s forwards;
+    }
+
+    .text3 {
+      top: 75%;
+      opacity: 0;
+      animation: textMoveIn 2s ease 12s forwards;
+    }
+
+    @keyframes textMoveIn {
+      0% { opacity: 0; transform: translateY(30px); filter: blur(6px); }
+      100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+
+    @keyframes textOut {
+      to { opacity: 0; transform: translateY(-30px); filter: blur(6px); }
+    }
+
+    .text-block h1 {
+      font-size: 60px;
+      font-family: 'Cinzel', serif;
+      margin-top: -55px;
+      color: #ffdd99;
+      text-shadow: 0 0 10px rgba(255, 210, 140, 0.7),
+                   0 0 20px rgba(255, 190, 100, 0.4),
+                   0 0 30px rgba(255, 170, 70, 0.3);
+    }
+
+    .text-block p {
+      font-size: 18px;
+      font-family: 'Cinzel', serif;
+      font-weight: bold;
+      color: #ffdd99;
+      line-height: 1.6;
+      margin-top: -45px;
+      text-shadow: 0 0 10px rgba(255, 210, 140, 0.7),
+                   0 0 20px rgba(255, 190, 100, 0.4),
+                   0 0 30px rgba(255, 170, 70, 0.3);
+    }
+
+    .enter-button {
+      padding: 14px 36px;
+      background: rgba(255, 215, 100, 0.15);
+      color: #fff;
+      border: 1px solid rgba(247, 244, 237, 0.6);
+      border-radius: 12px;
+      font-size: 20px;
+      font-family: 'Cormorant Garamond', serif;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      text-shadow: 0 0 10px rgba(194, 167, 86, 0.7);
+      box-shadow: 0 0 10px rgba(255, 180, 60, 0.5),
+                  inset 0 0 10px rgba(255, 180, 60, 0.3);
+      transition: all 0.4s ease;
+    }
+
+    .enter-button:hover {
+      background: rgba(255, 215, 100, 0.3);
+      transform: scale(1.1);
+     box-shadow: 0 0 10px rgba(255, 210, 140, 0.7),
+                   0 0 20px rgba(255, 190, 100, 0.4),
+                   0 0 30px rgba(255, 170, 70, 0.3);
+    }
+
+    
+  footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 10px;
+  text-align: center;
+  background: linear-gradient(to right, rgba(255, 221, 153, 0.08), rgba(255, 221, 153, 0.08), rgba(3, 3, 3, 0.85));
+  color: #ffddcc;
+  font-family: Georgia, serif;
+  font-size: 14px;
+  border-top: 1px solid #444;
+  box-shadow: 0 0 15px rgba(255, 221, 153, 0.1);
+  z-index: 10;
+  opacity: 0;
+  animation: fadeFooter 1.5s ease 3s forwards;
+}
+
+@keyframes fadeFooter {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+footer span {
+  color: #ffcc99;
+  font-weight: bold;
+}
+
+footer em {
+  display: block;
+  margin-top: 5px;
+  color: #ddd;
+  font-size: 13px;
+  font-style: italic;
+    text-shadow: 0 0 10px rgba(255, 210, 140, 0.7),
+                   0 0 20px rgba(255, 190, 100, 0.4),
+                   0 0 30px rgba(255, 170, 70, 0.3);
+}
+    
+  </style>
+</head>
+<body>
+<div class="real-door-wrapper" id="realDoorWrapper">
+  <div class="real-door left" id="leftDoor">
+    <img src="images/left doorr.jpg" alt="Left Door" />
+  </div>
+  <div class="real-door right" id="rightDoor">
+    <img src="images/right doorr.jpg" alt="Right Door" />
+  </div>
+</div>
+  <div class="navbar-container">
+    <div class="navbar">
+      <div class="logo">
+  <a href="index.html"> 
+    <img src="images/logoo-removebg-preview.png" alt="Logo" />
+  </a>
+</div>
+      <div class="menu-toggle" id="menuToggle">☰</div>
+      <div class="nav-links" id="navLinks">
+        <a href="./index.html">Home</a>
+        <a href="./about.html">About</a>
+        <a href="./contact.html">Contact</a>
+         
+        <a href="#" id="mobileChat" class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 64 64" width="28" height="28">
+            <path d="M32 6c-14.3 0-26 11.7-26 26v10c0 2.2 1.8 4 4 4h6v-14H10v-0.1C10 19.6 19.6 10 32 10s22 9.6 22 21.9V32h-6v14h6c2.2 0 4-1.8 4-4V32c0-14.3-11.7-26-26-26z"/>
+            <circle cx="24" cy="36" r="3" fill="#fff"/>
+            <circle cx="40" cy="36" r="3" fill="#fff"/>
+            <path d="M28 46c2.2 2.2 5.8 2.2 8 0" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
+        </a>
+      </div>
+  
+      <div class="icon desktop-chat" id="chatIcon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 64 64" width="28" height="28">
+          <path d="M32 6c-14.3 0-26 11.7-26 26v10c0 2.2 1.8 4 4 4h6v-14H10v-0.1C10 19.6 19.6 10 32 10s22 9.6 22 21.9V32h-6v14h6c2.2 0 4-1.8 4-4V32c0-14.3-11.7-26-26-26z"/>
+          <circle cx="24" cy="36" r="3" fill="#fff"/>
+          <circle cx="40" cy="36" r="3" fill="#fff"/>
+          <path d="M28 46c2.2 2.2 5.8 2.2 8 0" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="chatbot" id="chatbot">
+    <div class="chat-header">🤖 Regret Assistant</div>
+    <div class="chat-body" id="chatBody">
+      <div class="bot-msg">Welcome to the Regret Museum. What weighs on your soul today?</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Share a thought...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <div class="scene">
+    <div class="background-image"></div>
+
+    <div class="text-block text1">
+      <br><br><br><br><br><br><br><br><br>
+      <h1>Welcome To The Regret Museum</h1>
+      <br><br><br>
+      <p>
+     "Every silence here holds a voice, waiting—aching—to be heard. But only by those who dare to truly listen."
+      </p>
+<br>
+      <button class="enter-button fade-in-btn" onclick="window.location.href='map.html'">Enter the Map</button>
+    </div>
+  </div>
+ <footer>
+    <p>Designed by <span>Maryam</span> and <span>Rumaisa</span> • Aptech 2025 •</p>
+    <p><em>“Even silence holds a story.”</em></p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const menuToggle = document.getElementById("menuToggle");
+      const navLinks = document.getElementById("navLinks");
+
+      menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+      });
+
+      const chatbot = document.getElementById("chatbot");
+      const chatIcon = document.getElementById("chatIcon");
+      const chatBody = document.getElementById("chatBody");
+      const userInput = document.getElementById("userInput");
+      const mobileChat = document.getElementById("mobileChat");
+
+      chatIcon.addEventListener("click", () => {
+        chatbot.style.display = chatbot.style.display === "flex" ? "none" : "flex";
+      });
+
+      mobileChat.addEventListener("click", (e) => {
+        e.preventDefault();
+        chatbot.style.display = chatbot.style.display === "flex" ? "none" : "flex";
+        navLinks.classList.remove("active");
+      });
+
+      window.sendMessage = function () {
+        const msg = userInput.value.trim();
+        if (!msg) return;
+
+        const userMsg = document.createElement("div");
+        userMsg.className = "user-msg";
+        userMsg.textContent = msg;
+        chatBody.appendChild(userMsg);
+        userInput.value = "";
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        setTimeout(() => {
+          const reply = getBotReply(msg);
+          const botMsg = document.createElement("div");
+          botMsg.className = "bot-msg";
+          botMsg.textContent = reply;
+          chatBody.appendChild(botMsg);
+          chatBody.scrollTop = chatBody.scrollHeight;
+        }, 700);
+      }
+
+      function getBotReply(msg) {
+        const lower = msg.toLowerCase();
+        if (lower.includes("regret")) return "Some regrets echo louder than others.";
+        if (lower.includes("life")) return "Life is a fading chapter, full of silent pages.";
+        if (lower.includes("love")) return "Love in youth burns bright, but often leaves ashes.";
+        if (lower.includes("dream")) return "Dreams often outgrow the people who dreamed them.";
+        if (lower.includes("lost") || lower.includes("pain")) return "Sometimes we lose ourselves trying to find others.";
+        if (lower.includes("help")) return "I'm here. Whisper anything you couldn't say back then.";
+        return "Every whisper matters in the museum of memories.";
+      }
+    });
+document.addEventListener("DOMContentLoaded", () => {
+  const doorWrapper = document.getElementById("realDoorWrapper");
+  const leftDoor = document.getElementById("leftDoor");
+  const rightDoor = document.getElementById("rightDoor");
+  setTimeout(() => {
+    leftDoor.classList.add("open-left");
+    rightDoor.classList.add("open-right");
+
+    setTimeout(() => {
+      document.body.classList.add("museum-opened");
+      doorWrapper.style.display = "none";
+    }, 2500); 
+  }, 1000); 
+});
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Forgotten Room</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Lora&display=swap" rel="stylesheet" />
+     <link rel="icon" type="image/png" href="images/logoo-removebg-preview.png">
+   <style>
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+.navbar-container {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1400px;
+  z-index: 1000;
+  animation: ribbonOpen 2.2s ease forwards;
+  opacity: 0;
+  font-family: 'Cormorant Garamond', serif;
+}
+#navbar {
+  transition: top 0.4s ease-in-out;
+}
+
+@keyframes ribbonOpen {
+  0% {
+    width: 0;
+    opacity: 0;
+    clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
+  }
+  100% {
+    width: 100%;
+    opacity: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+.navbar {
+  background: linear-gradient(to right, rgba(255, 221, 153, 0.18) 15%, rgba(3, 3, 3, 0.85));
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 6px 20px rgba(255,255,255,0.05);
+  height: 70px;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.logo img {
+  height: 120px;
+  width: 200px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+}
+
+.nav-links a {
+  color: #e8e8e8;
+  text-decoration: none;
+  font-size: 20px;
+  position: relative;
+  transition: all 0.4s ease;
+  letter-spacing: 1px;
+}
+
+.nav-links a:hover {
+  color: #ffdd99;
+  text-shadow: 0 0 6px #ccc, 0 0 12px #bbb, 0 0 18px #aaa, 0 0 25px rgba(255, 255, 255, 0.3);
+  transform: scale(1.12) translateY(-2px);
+}
+
+.icon {
+  font-size: 22px;
+  color: #ddd;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.icon:hover {
+  color: #ffdd99;
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 0 10px  #ffdd99;
+}
+
+.chatbot {
+  position: fixed;
+  bottom: 80px;
+  right: 25px;
+  width: 300px;
+  max-height: 400px;
+  background: #1a1a1a;
+  color: #eee;
+  border: 1px solid #605f5e;
+  border-radius: 10px;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 0 15px #605f5e;
+  z-index: 9999;
+  font-family: 'Georgia', serif;
+}
+
+.chat-header {
+  padding: 10px;
+  background: #605f5e;
+  font-weight: bold;
+  text-align: center;
+  font-style: italic;
+}
+
+.chat-body {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+.chat-input {
+  display: flex;
+  border-top: 1px solid #444;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 8px;
+  background: #111;
+  color: white;
+  border: none;
+  outline: none;
+}
+
+.chat-input button {
+  background: #605f5e;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.user-msg, .bot-msg {
+  margin: 5px 0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  max-width: 85%;
+}
+
+.user-msg {
+  background: #2e2e2e;
+  align-self: flex-end;
+  color: #ccc;
+  text-align: right;
+}
+
+.bot-msg {
+  background: #333;
+  align-self: flex-start;
+  color: #eee;
+  font-style: italic;
+}
+
+.fade-in-btn {
+  opacity: 0;
+  animation: fadeInButton 2s ease 4s forwards;
+}
+
+@keyframes fadeInButton {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.menu-toggle {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 7px;
+  }
+
+  .logo {
+    width: 0px;
+  }
+
+  .logo img {
+    height: 55px;
+    width: 100px;
+  }
+
+  .nav-links {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 10px 10px 0 10px;
+    background: transparent;
+    position: static;
+    width: auto;
+    box-shadow: none;
+  }
+
+  .nav-links a {
+    font-size: 10px;
+    text-align: center;
+  }
+
+  .desktop-chat {
+    display: none;
+  }
+
+  #mobileChat {
+    display: block;
+  }
+
+  .navbar {
+    height: 50px;
+  }
+
+  .icon {
+    font-size: 16px;
+    padding: 5px 8px;
+  }
+}
+
+@media (min-width: 769px) {
+  #mobileChat {
+    display: none;
+  }
+}
+
+body {
+  background: url(./images/background.jpeg) repeat;
+  font-family: 'Quicksand', sans-serif;
+  color: #5c4329;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  text-align: center;
+  color: #eee9e4;
+  margin-top: 1rem;
+  text-shadow: 0 0 8px #ffdd99, 0 0 18px #ffcc88;
+  animation: titleGlow 1s ease-out 1s forwards;
+  opacity: 0;
+}
+@keyframes titleGlow {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+    text-shadow: none;
+  }
+  50% {
+    opacity: 0.6;
+    text-shadow: 0 0 10px #ffdd99;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    text-shadow: 0 0 12px #ffcc88, 0 0 20px #ffdd99;
+  }
+}
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.card {
+  background: #fff7ee;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(139, 94, 52, 0.3);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeIn 0.8s ease-out forwards;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+}
+.card:nth-child(n) {
+  animation-delay: calc(0.1s * var(--i));
+}
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.card:hover {
+  background: #f3e0ca;
+  transform: scale(1.05);
+  box-shadow: 0 16px 36px rgba(139, 94, 52, 0.45);
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-bottom: 2px solid #cbb37a;
+  transition: transform 0.6s, filter 0.6s;
+}
+.card:hover img {
+  transform: scale(1.05) rotate(1deg);
+  filter: brightness(1.05);
+}
+
+@media (min-width: 700px) {
+  .card {
+    flex-direction: row;
+    height: 200px;
+  }
+  .card img {
+    width: 40%;
+    height: 100%;
+    border-right: 2px solid #cbb37a;
+    border-bottom: none;
+  }
+}
+
+.card-content {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  margin: 0 0 0.4rem;
+  color: #8b5e34;
+}
+
+.card-author {
+  font-style: italic;
+  font-size: 1.05rem;
+  color: #a37b4b;
+  font-weight: bold;
+  background: rgba(163, 123, 75, 0.15);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 0.6rem;
+}
+
+.card-desc {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #5c4329;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 450px; 
+  max-width: 90%;
+  background-color: #3a240f;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(139, 94, 52, 0.4);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+}
+
+.modal * {
+  color: #f7efdb !important;
+}
+
+.modal::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+  opacity: 0.05;
+  pointer-events: none;
+  border-radius: 15px;
+}
+
+#bookDetailView, #cartView, #billingForm {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 10px;
+}
+
+#modalImage {
+  max-height: 160px;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #f7efdb;
+}
+
+#modalTitle {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+  text-align: center;
+}
+
+#modalAuthor {
+  font-style: italic;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-weight: bold;
+  text-align: center;
+}
+
+#modalDesc {
+  font-size: 0.85rem;
+  line-height: 1.3;
+  max-height: 100px;
+  overflow-y: auto;
+  text-align: center;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.custom-btn {
+  background: linear-gradient(145deg, #d9b76a, #9a6b2a);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Quicksand', sans-serif;
+  transition: background 0.3s ease;
+}
+
+.custom-btn:hover {
+  background: linear-gradient(145deg, #f1d891, #b47c2b);
+}
+.modal-overlay {
+  display: none;
+}
+.modal-overlay.active {
+  display: flex; 
+}
+
+#cartView h2 {
+  text-align: center;
+  margin-top: 0;
+  color: #8b5e34;
+}
+
+#cartItemsList {
+  list-style: none;
+  padding: 0;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+#cartItemsList li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #cbb37a;
+}
+
+.remove-btn {
+  background: #b88740;
+  border: none;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.remove-btn:hover {
+  background: #7e6125;
+}
+
+#checkoutBtn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #a3753f;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background 0.3s;
+}
+
+#checkoutBtn:hover {
+  background-color: #9a6b2a;
+}
+
+#billingForm h3 {
+  text-align: center;
+  color: black;
+}
+
+#billingForm form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#billingForm input,
+#billingForm textarea {
+  background-color: #fff !important;  
+  color: #000 !important;  
+  border: 1px solid #000;
+  border-radius: 6px;
+  padding: 0.75rem;
+  font-family: 'Quicksand', sans-serif;
+  outline: none;
+}
+
+#billingForm input::placeholder,
+#billingForm textarea::placeholder {
+  color: #555 !important;
+  opacity: 1;
+}
+
+#billingForm input:focus,
+#billingForm textarea:focus {
+  border-color: #a3753f !important;
+  box-shadow: 0 0 5px #a3753f;
+}
+
+
+#billingForm button {
+  padding: 0.75rem;
+  background-color: #a3753f;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#billingForm button:hover {
+  background-color: #9a6b2a;
+}
+
+/* View Cart Button */
+#viewCartBtn {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: linear-gradient(145deg, #a3753f, #704d1e);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 1100;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  letter-spacing: 0.04em;
+  box-shadow: 0 4px 8px rgba(112, 77, 30, 0.5);
+  margin-top: 65px;
+}
+
+#viewCartBtn:hover {
+  background: linear-gradient(145deg, #d9b76a, #9a6b2a);
+  box-shadow: 0 6px 14px rgba(217, 183, 106, 0.7);
+}
+
+#toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: #a3753f;
+  color: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: opacity 0.4s, transform 0.4s;
+  z-index: 1100;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+#toast.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.btn-group {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+ .btn {
+  padding: 10px 22px;
+  font-size: 15px;
+  border-color: #dad4d0;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #f0edeb;
+
+  border: 1px solid rgba(255, 221, 153, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 221, 153, 0.1), 0 0 10px rgba(255, 221, 153, 0.15);
+  /* cursor: pointer; */
+  transition: all 0.35s ease;
+  text-decoration: none;
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 0.5px;
+    text-shadow: 0 0 8px #88744d6e, 0 0 18px #ffcc88;
+}
+
+.btn:hover {
+  transform: scale(1.08);
+  background: rgba(255, 221, 153, 0.15);
+  box-shadow: 0 0 20px rgba(255, 221, 153, 0.4), 0 0 35px rgba(255, 204, 153, 0.3);
+  color: #fff6e6;
+   background: linear-gradient(145deg, #d9b76a, #9a6b2a);
+  box-shadow: 0 6px 14px rgba(217, 183, 106, 0.7);
+}
+
+@keyframes fadeUpFooter {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+ footer {
+  padding: 10px 20px;
+  background: linear-gradient(to right, rgba(255, 221, 153, 0.18) 15%, rgba(3, 3, 3, 0.85));
+  color: #e8e8e8;
+  font-size: 15px;
+
+  text-align: center;
+  box-shadow: 0 -6px 20px rgba(255,255,255,0.05);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  opacity: 0;
+  animation: fadeUpFooter 1s ease-out 1s forwards;
+}
+
+footer em {
+  display: block;
+  margin-top: 5px;
+  color: #f3e8d3;
+  font-size: 16px;
+  text-shadow: 0 0 5px #ffcc88;
+}
+
+
+</style>
+</head>
+<body>
+   <div class="navbar-container" id="navbar">
+    <div class="navbar">
+    <div class="logo">
+  <a href="index.html"> 
+    <img src="images/logoo-removebg-preview.png" alt="Logo" />
+  </a>
+</div>
+    
+      <div class="nav-links" id="navLinks">
+         <div class="menu-toggle" id="menuToggle">☰</div>
+        <a href="./index.html">HOME</a>
+        <a href="./about.html">ABOUT</a>
+        <a href="./contact.html">CONTACT</a>
+          <a href="#" id="mobileChat" class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 64 64" width="28" height="28">
+            <path d="M32 6c-14.3 0-26 11.7-26 26v10c0 2.2 1.8 4 4 4h6v-14H10v-0.1C10 19.6 19.6 10 32 10s22 9.6 22 21.9V32h-6v14h6c2.2 0 4-1.8 4-4V32c0-14.3-11.7-26-26-26z"/>
+            <circle cx="24" cy="36" r="3" fill="#fff"/>
+            <circle cx="40" cy="36" r="3" fill="#fff"/>
+            <path d="M28 46c2.2 2.2 5.8 2.2 8 0" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
+        </a>
+      </div>
+     
+      <div class="icon desktop-chat" id="chatIcon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 64 64" width="28" height="28">
+          <path d="M32 6c-14.3 0-26 11.7-26 26v10c0 2.2 1.8 4 4 4h6v-14H10v-0.1C10 19.6 19.6 10 32 10s22 9.6 22 21.9V32h-6v14h6c2.2 0 4-1.8 4-4V32c0-14.3-11.7-26-26-26z"/>
+          <circle cx="24" cy="36" r="3" fill="#fff"/>
+          <circle cx="40" cy="36" r="3" fill="#fff"/>
+          <path d="M28 46c2.2 2.2 5.8 2.2 8 0" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="chatbot" id="chatbot">
+    <div class="chat-header">🤖 Regret Assistant</div>
+    <div class="chat-body" id="chatBody">
+      <div class="bot-msg">Welcome to the Regret Museum. What weighs on your soul today?</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Share a thought...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+  <br><br><br><br><br>
+<h1>Forgotten Room Collection</h1>
+<div class="cards-container">
+  
+  <div class="card" tabindex="0" data-title="To Kill a Mockingbird" data-author="Harper Lee" data-desc="A profound novel on racial injustice and moral growth in the American South." data-img="./images/forgotten 1.jpg">
+    <img src="./images/forgotten 1.jpg" alt="To Kill a Mockingbird" />
+    <div class="card-content"><br>
+      <h3 class="card-title"> Kill a Mockingbird</h3>
+      <p class="author">Harper Lee</p>
+      <p class="desc">A profound novel on racial injustice and moral growth in the American South.</p>
+    </div>
+  </div>
+  
+  <div class="card" tabindex="0" data-title="1984" data-author="George Orwell" data-desc="A dystopian vision of a totalitarian regime and the loss of freedom." data-img="./images/fogotten 2.jpg">
+    <img src="./images/fogotten 2.jpg" alt="1984" />
+    <div class="card-content">
+      <h3 class="card-title">1984</h3>
+      <p class="author">George Orwell</p>
+      <p class="desc">A dystopian vision of a totalitarian regime and the loss of freedom.</p>
+    </div>
+  </div>
+
+  <div class="card" tabindex="0" data-title="Pride and Prejudice" data-author="Jane Austen" data-desc="A classic tale of love, society, and misunderstanding in 19th-century England." data-img="./images/forgotten 3.jpg">
+    <img src="./images/forgotten 3.jpg" alt="Pride and Prejudice" />
+    <div class="card-content"><br>
+      <h3 class="card-title">Pride and Prejudice</h3>
+      <p class="author">Jane Austen</p>
+      <p class="desc">A classic tale of love, society, and misunderstanding in 19th-century England.</p>
+    </div>
+  </div>
+
+  <div class="card" tabindex="0" data-title="The Great Gatsby" data-author="F. Scott Fitzgerald" data-desc="A critique of the American Dream set in the Roaring Twenties." data-img="./images/forgotten 4.jpg">
+    <img src="./images/forgotten 4.jpg" alt="The Great Gatsby" />
+    <div class="card-content">
+      <h3 class="card-title">The Great Gatsby</h3>
+      <p class="author">F. Scott Fitzgerald</p>
+      <p class="desc">A critique of the American Dream set in the Roaring Twenties.</p>
+    </div>
+  </div>
+
+  <div class="card" tabindex="0" data-title="Harry Potter and the Sorcerer's Stone" data-author="J.K. Rowling" data-desc="The magical beginning of the beloved wizarding series." data-img="./images/forgotten 5.jpg">
+    <img src="./images/forgotten 5.jpg" alt="Harry Potter and the Sorcerer's Stone" />
+    <div class="card-content"><br>
+      <h3 class="card-title">Harry Potter and the Sorcerer's Stone</h3>
+      <p class="author">J.K. Rowling</p>
+      <p class="desc">The magical beginning of the beloved wizarding series.</p>
+    </div>
+  </div>
+
+  <div class="card" tabindex="0" data-title="The Hobbit" data-author="J.R.R. Tolkien" data-desc="An epic fantasy adventure that introduces Middle-earth and its legendary heroes." data-img="./images/forgotten 6.jpg">
+    <img src="./images/forgotten 6.jpg" alt="The Hobbit" />
+    <div class="card-content">
+      <h3 class="card-title">The Hobbit</h3>
+      <p class="author">J.R.R. Tolkien</p>
+      <p class="desc">An epic fantasy adventure that introduces Middle-earth and its legendary heroes.</p>
+    </div>
+  </div>
+ 
+  <div class="card" tabindex="0" data-title="The Catcher in the Rye" data-author="J.D. Salinger" data-desc="A story about teenage rebellion and alienation in post-war America." data-img="./images/forgotten 7.jpg">
+    <img src="./images/forgotten 7.jpg" alt="The Catcher in the Rye" />
+    <div class="card-content"><br>
+      <h3 class="card-title">The Catcher in the Rye</h3>
+      <p class="author">J.D. Salinger</p>
+      <p class="desc">A story about teenage rebellion and alienation in post-war America.</p>
+    </div>
+  </div>
+ 
+  <div class="card" tabindex="0" data-title="The Alchemist" data-author="Paulo Coelho" data-desc="A philosophical journey about following your dreams and listening to your heart." data-img="./images/forgotten 8.jpg">
+    <img src="./images/forgotten 8.jpg" alt="The Alchemist" />
+    <div class="card-content"><br>
+      <h3 class="card-title">The Alchemist</h3>
+      <p class="author">Paulo Coelho</p>
+      <p class="desc">A philosophical journey about following your dreams and listening to your heart.</p>
+    </div>
+  </div>
+ 
+  <div class="card" tabindex="0" data-title="Moby-Dick" data-author="Herman Melville" data-desc="A thrilling adventure about obsession and the sea's mysteries." data-img="./images/forgotten 9.jpg">
+    <img src="./images/forgotten 9.jpg" alt="Moby-Dick" />
+    <div class="card-content">
+      <h3 class="card-title">Moby-Dick</h3>
+      <p class="author">Herman Melville</p>
+      <p class="desc">A thrilling adventure about obsession and the sea's mysteries.</p>
+    </div>
+  </div>
+</div>
+
+<button id="viewCartBtn" aria-label="View Cart">Cart (<span id="cartCount">0</span>)</button>
+
+
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+  <div class="modal" role="document">
+    <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+    
+    
+    <div id="bookDetailView">
+      <img id="modalImage" src="" alt="" />
+      <h2 id="modalTitle"></h2>
+      <p class="author" id="modalAuthor"></p>
+      <p id="modalDesc"></p>
+      <div class="button-container">
+        <button class="custom-btn" id="buyNowBtn">Buy Now</button>
+        <button class="custom-btn" id="addToCartBtn">Add to Cart</button>
+      </div>
+    </div>
+
+   
+    <div id="cartView" style="display:none;">
+      <h2>Your Cart</h2>
+      <ul id="cartItemsList"></ul>
+        <button id="checkoutBtn"  onclick="goToPage()">Proceed to Checkout</button>
+      
+    </div>
+
+    <div id="billingForm" style="display:none;">
+      <h3>Billing Info</h3>
+      <form id="billingFormEl">
+        <input type="text" placeholder="Full Name" required />
+        <input type="email" placeholder="Email" required />
+        <input type="text" placeholder="Address" required />
+        <button type="submit">Pay Now</button>
+      </form>
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="btn-group"> 
+  <a href="map.html" class="btn">Back to the Museum</a>
+</div><br><br>
+<footer>
+  <p><em>“Silence is the part of this room's design ”</em></p>
+</footer>
+<script>
+  // JavaScript Code
+  const cards = document.querySelectorAll('.card');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const bookDetailView = document.getElementById('bookDetailView');
+  const cartView = document.getElementById('cartView');
+  const billingFormDiv = document.getElementById('billingForm');
+  const modalClose = document.getElementById('modalClose');
+  const cartCountSpan = document.getElementById('cartCount');
+  const viewCartBtn = document.getElementById('viewCartBtn');
+  const cartItemsList = document.getElementById('cartItemsList');
+  const buyNowBtn = document.getElementById('buyNowBtn');
+  const addToCartBtn = document.getElementById('addToCartBtn');
+  const toast = document.getElementById('toast');
+
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  let currentBook = null;
+
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function updateCartCount() {
+    document.getElementById('cartCount').textContent = cart.length;
+  }
+
+  function openBookModal(book) {
+    currentBook = book;
+    document.getElementById('modalTitle').textContent = book.title;
+    document.getElementById('modalAuthor').textContent = `by ${book.author}`;
+    document.getElementById('modalDesc').textContent = book.desc;
+    const imgEl = document.getElementById('modalImage');
+    imgEl.src = book.img;
+    imgEl.alt = book.title;
+   
+    document.getElementById('bookDetailView').style.display = 'flex';
+    document.getElementById('cartView').style.display = 'none';
+    document.getElementById('billingForm').style.display = 'none';
+    
+    modalOverlay.classList.add('active');
+   
+    document.getElementById('buyNowBtn').focus();
+  }
+
+  function openCartModal() {
+    document.getElementById('bookDetailView').style.display = 'none';
+    document.getElementById('cartView').style.display = 'block';
+    document.getElementById('billingForm').style.display = 'none';
+    modalOverlay.classList.add('active');
+    renderCart();
+  }
+
+  function closeModal() {
+    modalOverlay.classList.remove('active');
+   
+    document.getElementById('bookDetailView').style.display = 'flex';
+    document.getElementById('cartView').style.display = 'none';
+    document.getElementById('billingForm').style.display = 'none';
+  }
+  function renderCart() {
+    cartItemsList.innerHTML = '';
+    if (cart.length === 0) {
+      const li = document.createElement('li');
+      li.textContent = 'Your cart is empty.';
+      cartItemsList.appendChild(li);
+      return;
+    }
+    cart.forEach((item, index) => {
+      const li = document.createElement('li');
+      li.innerHTML = `${item.title} by ${item.author} <button class="remove-btn" data-index="${index}">Remove</button>`;
+      cartItemsList.appendChild(li);
+    });
+    
+    document.querySelectorAll('.remove-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        const idx = parseInt(e.target.dataset.index);
+        cart.splice(idx, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+        renderCart();
+        showToast('Item removed from cart.');
+      });
+    });
+  }
+
+  function addToCart() {
+    if (!currentBook) return;
+    if (cart.some(item => item.title === currentBook.title)) {
+      showToast('This book is already in your cart.');
+      return;
+    }
+    cart.push(currentBook);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    showToast('Book added to cart!');
+  }
+
+  function buyNow() {
+    if (!currentBook) return;
+    document.getElementById('bookDetailView').style.display = 'none';
+    document.getElementById('cartView').style.display = 'none';
+    document.getElementById('billingForm').style.display = 'block';
+    document.querySelector('#billingForm form').reset();
+    document.querySelector('#billingForm button[type="submit"]').focus();
+  }
+
+  // Event listeners for cards
+  cards.forEach((card, index) => {
+    // Set CSS variable for animation delay
+    card.style.setProperty('--i', index);
+    card.addEventListener('click', () => {
+      const book = {
+        title: card.dataset.title,
+        author: card.dataset.author,
+        desc: card.dataset.desc,
+        img: card.dataset.img,
+      };
+      openBookModal(book);
+    });
+  });
+
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  document.getElementById('modalOverlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  });
+  document.getElementById('viewCartBtn').addEventListener('click', openCartModal);
+  document.getElementById('addToCartBtn').addEventListener('click', addToCart);
+  document.getElementById('buyNowBtn').addEventListener('click', buyNow);
+
+  document.querySelector('#billingForm form').addEventListener('submit', e => {
+    e.preventDefault();
+
+    const fullName = e.target[0].value.trim();
+    const email = e.target[1].value.trim();
+    const address = e.target[2].value.trim();
+
+    const nameRegex = /^[a-zA-Z\s]{2,}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!nameRegex.test(fullName)) {
+      alert('Please enter a valid full name (letters and spaces only).');
+      e.target[0].focus();
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      alert('Please enter a valid email address.');
+      e.target[1].focus();
+      return;
+    }
+
+    if (address.length < 5) {
+      alert('Please enter a valid address.');
+      e.target[2].focus();
+      return;
+    }
+
+    showToast('Thank you for your purchase!');
+    cart = [];
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    closeModal();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+      closeModal();
+    }
+  });
+
+  updateCartCount();
+
+
+
+  document.addEventListener("DOMContentLoaded", function () {
+      const menuToggle = document.getElementById("menuToggle");
+      const navLinks = document.getElementById("navLinks");
+
+      menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+      });
+
+      const chatbot = document.getElementById("chatbot");
+      const chatIcon = document.getElementById("chatIcon");
+      const chatBody = document.getElementById("chatBody");
+      const userInput = document.getElementById("userInput");
+      const mobileChat = document.getElementById("mobileChat");
+
+      chatIcon.addEventListener("click", () => {
+        chatbot.style.display = chatbot.style.display === "flex" ? "none" : "flex";
+      });
+
+      mobileChat.addEventListener("click", (e) => {
+        e.preventDefault();
+        chatbot.style.display = chatbot.style.display === "flex" ? "none" : "flex";
+        navLinks.classList.remove("active");
+      });
+
+      window.sendMessage = function () {
+        const msg = userInput.value.trim();
+        if (!msg) return;
+
+        const userMsg = document.createElement("div");
+        userMsg.className = "user-msg";
+        userMsg.textContent = msg;
+        chatBody.appendChild(userMsg);
+        userInput.value = "";
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        setTimeout(() => {
+          const reply = getBotReply(msg);
+          const botMsg = document.createElement("div");
+          botMsg.className = "bot-msg";
+          botMsg.textContent = reply;
+          chatBody.appendChild(botMsg);
+          chatBody.scrollTop = chatBody.scrollHeight;
+        }, 700);
+      }
+
+      function getBotReply(msg) {
+        const lower = msg.toLowerCase();
+        if (lower.includes("regret")) return "Some regrets echo louder than others.";
+        if (lower.includes("life")) return "Life is a fading chapter, full of silent pages.";
+        if (lower.includes("love")) return "Love in youth burns bright, but often leaves ashes.";
+        if (lower.includes("dream")) return "Dreams often outgrow the people who dreamed them.";
+        if (lower.includes("lost") || lower.includes("pain")) return "Sometimes we lose ourselves trying to find others.";
+        if (lower.includes("help")) return "I'm here. Whisper anything you couldn't say back then.";
+        return "Every whisper matters in the museum of memories.";
+      }
+    });
+  let lastScrollTop = 0;
+  const navbar = document.getElementById("navbar");
+
+  window.addEventListener("scroll", function () {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (scrollTop > lastScrollTop) {
+      navbar.style.top = "-100px"; 
+    } else {
+      navbar.style.top = "0";
+    }
+
+    lastScrollTop = scrollTop;
+  });
+
+
+function goToPage() {
+  window.location.href = "f.html";
+}
+
+</script>
+</body>
+</html>

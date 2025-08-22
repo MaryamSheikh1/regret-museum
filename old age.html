@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Room Of Old Age</title>
+<link rel="icon" type="image/png" href="images/logoo-removebg-preview.png" />
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html, body {
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  font-family: 'Georgia', serif;
+  color: #fff;
+}
+.navbar-container {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1400px;
+  z-index: 1000;
+  animation: ribbonOpen 2.2s ease forwards;
+  opacity: 0;
+  font-family: 'Cormorant Garamond', serif;
+}
+#navbar {
+  transition: top 0.4s ease-in-out;
+}
+@keyframes ribbonOpen {
+  0% {
+    width: 0;
+    opacity: 0;
+    clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
+  }
+  100% {
+    width: 100%;
+    opacity: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+.navbar {
+  background: linear-gradient(to right, rgba(255, 221, 153, 0.18) 15%, rgba(3, 3, 3, 0.85));
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 6px 20px rgba(255,255,255,0.05);
+  height: 70px;
+  font-family: 'Cormorant Garamond', serif;
+}
+.logo img {
+  height: 120px;
+  width: 200px;
+}
+.nav-links {
+  display: flex;
+  gap: 40px;
+}
+.nav-links a {
+  color: #e8e8e8;
+  text-decoration: none;
+  font-size: 20px;
+  position: relative;
+  transition: all 0.4s ease;
+  letter-spacing: 1px;
+}
+.nav-links a:hover {
+  color: #ffdd99;
+  text-shadow: 0 0 6px #ccc, 0 0 12px #bbb, 0 0 18px #aaa, 0 0 25px rgba(255, 255, 255, 0.3);
+  transform: scale(1.12) translateY(-2px);
+}
+.icon {
+  font-size: 22px;
+  color: #ddd;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+.icon:hover {
+  color: #ffdd99;
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 0 10px  #ffdd99;
+}
+
+.chatbot {
+  position: fixed;
+  bottom: 80px;
+  right: 25px;
+  width: 300px;
+  max-height: 400px;
+  background: #1a1a1a;
+  color: #eee;
+  border: 1px solid #605f5e;
+  border-radius: 10px;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 0 15px #605f5e;
+  z-index: 9999;
+  font-family: 'Georgia', serif;
+}
+.chat-header {
+  padding: 10px;
+  background: #605f5e;
+  font-weight: bold;
+  text-align: center;
+  font-style: italic;
+}
+.chat-body {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+.chat-input {
+  display: flex;
+  border-top: 1px solid #444;
+}
+.chat-input input {
+  flex: 1;
+  padding: 8px;
+  background: #111;
+  color: white;
+  border: none;
+  outline: none;
+}
+.chat-input button {
+  background: #605f5e;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.user-msg, .bot-msg {
+  margin: 5px 0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  max-width: 85%;
+}
+.user-msg {
+  background: #2e2e2e;
+  align-self: flex-end;
+  color: #ccc;
+  text-align: right;
+}
+.bot-msg {
+  background: #333;
+  align-self: flex-start;
+  color: #eee;
+  font-style: italic;
+}
+.fade-in-btn {
+  opacity: 0;
+  animation: fadeInButton 2s ease 4s forwards;
+}
+@keyframes fadeInButton {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.menu-toggle {
+  display: none;
+}
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 7px;
+  }
+  .logo {
+    width: 0px;
+  }
+  .logo img {
+    height: 55px;
+    width: 100px;
+  }
+  .nav-links {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 10px 10px 0 10px;
+    background: transparent;
+    position: static;
+    width: auto;
+    box-shadow: none;
+  }
+  .nav-links a {
+    font-size: 10px;
+    text-align: center;
+  }
+  .desktop-chat {
+    display: none;
+  }
+  #mobileChat {
+    display: block;
+  }
+  .navbar {
+    height: 50px;
+  }
+  .icon {
+    font-size: 16px;
+    padding: 5px 8px;
+  }
+}
+@media (min-width: 769px) {
+  #mobileChat { display: none; }
+}
+.slide video,
+.slide {
+  width: 100%;
+  height: 100%;
+}
+
+.slide video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  object-position: center; 
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover; 
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+
+@media (max-width: 768px) {
+  .slide video {
+    height: 100vh; 
+    width: 100vw;
+  }
+  .slide {
+    height: 100vh;
+    width: 100vw;
+  }
+}
+
+.overlay{
+  position: relative;
+  background:rgba(0,0,0,0.4);
+  padding:20px 30px;
+  border-radius:12px;
+  text-align:center;
+  z-index: 1;
+  box-shadow: 0 0 12px #ffcc88, 0 0 20px #ffdd99;
+}
+.overlay p{
+  margin:6px 0;
+  font-size:clamp(18px,2.5vw,28px);
+  text-shadow:
+    0 0 5px rgba(255, 215, 0, 0.8),
+    0 0 10px rgba(255, 215, 0, 0.7),
+    0 0 15px rgba(255, 215, 0, 0.6);
+}
+.line1{font-weight:bold;}
+.line2{font-style:italic;opacity:0.9}
+@keyframes zoomFade {
+  0% {opacity:0; transform:scale(1)}
+  10%{opacity:1; transform:scale(1.02)}
+  50%{opacity:1; transform:scale(1.06)}
+  90%{opacity:0; transform:scale(1.08)}
+  100%{opacity:0; transform:scale(1.1)}
+}
+@keyframes zoomStay {
+  0% {opacity:0; transform:scale(1)}
+  20%{opacity:1; transform:scale(1.02)}
+  100%{opacity:1; transform:scale(1.06)}
+}
+@keyframes textFade {
+  0% {opacity:0; transform:translateY(20px)}
+  15%{opacity:1; transform:translateY(0)}
+  80%{opacity:1; transform:translateY(0)}
+  100%{opacity:0; transform:translateY(-20px)}
+}
+@keyframes textStay {
+  0% {opacity:0; transform:translateY(20px)}
+  20%{opacity:1; transform:translateY(0)}
+  100%{opacity:1; transform:translateY(0)}
+}
+.footer {
+  background: linear-gradient(to right, rgba(255, 221, 153, 0.18) 15%, rgba(3, 3, 3, 0.85));
+  color: #e8e8e8;
+    text-shadow:
+    0 0 5px rgba(255, 254, 251, 0.8),
+    0 0 10px rgba(255, 215, 0, 0.7),
+    0 0 15px rgba(255, 215, 0, 0.6);
+  text-align: center;
+  padding: 15px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  letter-spacing: 1px;
+  box-shadow: 0 -6px 20px rgba(255,255,255,0.05);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 1400px;
+  left: 50%;
+  animation: slideUp 2.5s ease forwards;
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+#lastSection a {
+  display: inline-block;
+  margin: 8px;
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.4);  
+  color: #ffdd99;
+  border: 1px solid rgba(255, 221, 153, 0.6);
+  border-radius: 12px;
+  text-decoration: none;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  letter-spacing: 1px;
+  box-shadow:
+    0 0 12px rgba(255, 221, 153, 0.6),
+    0 0 20px rgba(255, 221, 153, 0.5);
+  transition: all 0.4s ease;
+  text-shadow: 0 0 6px #ccc, 0 0 12px #bbb, 0 0 18px #aaa, 0 0 25px rgba(255, 255, 255, 0.3);
+}
+
+#lastSection a:hover {
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border-color: rgba(255, 221, 153, 0.9);
+  box-shadow:
+    0 0 18px rgba(255, 221, 153, 0.9),
+    0 0 28px rgba(255, 221, 153, 0.8),
+    0 0 38px rgba(255, 221, 153, 0.7);
+  transform: scale(1.08);
+  text-shadow: 0 0 8px #fff, 0 0 15px #fff;
+}
+
+
+</style>
+</head>
+<body>
+
+<div class="navbar-container" id="navbar">
+  <div class="navbar">
+     <div class="logo">
+  <a href="index.html"> 
+    <img src="images/logoo-removebg-preview.png" alt="Logo" />
+  </a>
+</div>
+    <div class="nav-links" id="navLinks">
+      <div class="menu-toggle" id="menuToggle">☰</div>
+      <a href="./index.html">HOME</a>
+      <a href="./about.html">ABOUT</a>
+      <a href="./contact.html">CONTACT</a>
+  <a href="#" id="mobileChat" class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 64 64" width="28" height="28">
+            <path d="M32 6c-14.3 0-26 11.7-26 26v10c0 2.2 1.8 4 4 4h6v-14H10v-0.1C10 19.6 19.6 10 32 10s22 9.6 22 21.9V32h-6v14h6c2.2 0 4-1.8 4-4V32c0-14.3-11.7-26-26-26z"/>
+            <circle cx="24" cy="36" r="3" fill="#fff"/>
+            <circle cx="40" cy="36" r="3" fill="#fff"/>
+            <path d="M28 46c2.2 2.2 5.8 2.2 8 0" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
+        </a>
+      </div>
+     
+      <div class="icon desktop-chat" id="chatIcon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 64 64" width="28" height="28">
+          <path d="M32 6c-14.3 0-26 11.7-26 26v10c0 2.2 1.8 4 4 4h6v-14H10v-0.1C10 19.6 19.6 10 32 10s22 9.6 22 21.9V32h-6v14h6c2.2 0 4-1.8 4-4V32c0-14.3-11.7-26-26-26z"/>
+          <circle cx="24" cy="36" r="3" fill="#fff"/>
+          <circle cx="40" cy="36" r="3" fill="#fff"/>
+          <path d="M28 46c2.2 2.2 5.8 2.2 8 0" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="chatbot" id="chatbot">
+    <div class="chat-header">🤖 Regret Assistant</div>
+    <div class="chat-body" id="chatBody">
+      <div class="bot-msg">Welcome to the Regret Museum. What weighs on your soul today?</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Share a thought...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+<div id="slideshow"></div>
+
+
+<div id="lastSection" style="
+  display:none;
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+">
+  <p style="
+    font-size:18px;
+    color: #ffdd99;
+    text-shadow:
+      0 0 5px rgba(61, 57, 30, 0.8),
+      0 0 10px rgba(83, 82, 77, 0.7),
+      0 0 15px rgba(36, 35, 32, 0.6);
+    margin-bottom:12px;
+    font-style:italic;
+  ">
+    This story waits for you to hold it in your hands...
+  </p>
+  <a href="./old.html">Buy This Book</a>
+  <a href="./map.html">Back to the Museum</a>
+</div>
+
+
+<footer class="footer">
+  <p>The years took time , and left questions</p>
+</footer>
+
+<script>
+const slides = [
+  {img:'images/SA.jpg', line1:'On the stairs of time, I lost that smile', line2:'Left behind — now only memory’s style'},
+  {img:'images/o R.mp4', line1:'Dreams drift in a moving frame', line2:'The world turns, but none remain'},
+  {img:'images/sunl.jpg', line1:'Empty table’s edge held thirsty tales', line2:'Silence stayed — unfinished trails'},
+  {img:'images/old room.mp4', line1:'Flowing time hides unspoken pain', line2:'Like rain that falls without a name'},
+  {img:'images/cf.jpg', line1:'Hands of time kept stealing my days', line2:'Every tick whispered — nothing stays'},
+  {img:'images/statuess.png', line1:'Stone faces guard the tales of years', line2:'In their stillness, they hide our tears'}
+];
+let index = 0;
+const slideshow = document.getElementById('slideshow');
+function showSlide(i){
+  const s = slides[i];
+  const slideEl = document.createElement('div');
+  slideEl.className = 'slide';
+  const isVideo = s.img.endsWith('.mp4') || s.img.endsWith('.webm');
+  
+  if (i === slides.length - 1) {
+    slideEl.style.animation = isVideo ? '' : 'zoomStay 8s ease-in-out forwards';
+  } else {
+    slideEl.style.animation = isVideo ? '' : 'zoomFade 8s ease-in-out forwards';
+  }
+  if (isVideo) {
+    const videoEl = document.createElement('video');
+    videoEl.src = s.img;
+    videoEl.autoplay = true;
+    videoEl.loop = true;
+    videoEl.muted = true;
+    videoEl.playsInline = true;
+    videoEl.controls = false;
+    slideEl.appendChild(videoEl);
+  } else {
+    slideEl.style.backgroundImage = `url(${s.img})`;
+  }
+  const overlayEl = document.createElement('div');
+  overlayEl.className = 'overlay';
+  overlayEl.style.animation = (i === slides.length - 1) ? 'textStay 8s ease-in-out forwards' : 'textFade 8s ease-in-out forwards';
+  overlayEl.innerHTML = `<p class="line1">${s.line1}</p><p class="line2">${s.line2}</p>`;
+  slideEl.appendChild(overlayEl);
+  slideshow.innerHTML = '';
+  slideshow.appendChild(slideEl);
+ 
+  document.getElementById('lastSection').style.display = (i === slides.length - 1) ? "block" : "none";
+  if (i < slides.length - 1) {
+    setTimeout(()=>{ index++; showSlide(index); }, 8000);
+  }
+}
+showSlide(index);
+
+
+
+ document.addEventListener("DOMContentLoaded", function () {
+      const menuToggle = document.getElementById("menuToggle");
+      const navLinks = document.getElementById("navLinks");
+
+      menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+      });
+
+      const chatbot = document.getElementById("chatbot");
+      const chatIcon = document.getElementById("chatIcon");
+      const chatBody = document.getElementById("chatBody");
+      const userInput = document.getElementById("userInput");
+      const mobileChat = document.getElementById("mobileChat");
+
+      chatIcon.addEventListener("click", () => {
+        chatbot.style.display = chatbot.style.display === "flex" ? "none" : "flex";
+      });
+
+      mobileChat.addEventListener("click", (e) => {
+        e.preventDefault();
+        chatbot.style.display = chatbot.style.display === "flex" ? "none" : "flex";
+        navLinks.classList.remove("active");
+      });
+
+      window.sendMessage = function () {
+        const msg = userInput.value.trim();
+        if (!msg) return;
+
+        const userMsg = document.createElement("div");
+        userMsg.className = "user-msg";
+        userMsg.textContent = msg;
+        chatBody.appendChild(userMsg);
+        userInput.value = "";
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        setTimeout(() => {
+          const reply = getBotReply(msg);
+          const botMsg = document.createElement("div");
+          botMsg.className = "bot-msg";
+          botMsg.textContent = reply;
+          chatBody.appendChild(botMsg);
+          chatBody.scrollTop = chatBody.scrollHeight;
+        }, 700);
+      }
+
+      function getBotReply(msg) {
+        const lower = msg.toLowerCase();
+        if (lower.includes("regret")) return "Some regrets echo louder than others.";
+        if (lower.includes("life")) return "Life is a fading chapter, full of silent pages.";
+        if (lower.includes("love")) return "Love in youth burns bright, but often leaves ashes.";
+        if (lower.includes("dream")) return "Dreams often outgrow the people who dreamed them.";
+        if (lower.includes("lost") || lower.includes("pain")) return "Sometimes we lose ourselves trying to find others.";
+        if (lower.includes("help")) return "I'm here. Whisper anything you couldn't say back then.";
+        return "Every whisper matters in the museum of memories.";
+      }
+    });
+  let lastScrollTop = 0;
+  const navbar = document.getElementById("navbar");
+
+  window.addEventListener("scroll", function () {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (scrollTop > lastScrollTop) {
+      navbar.style.top = "-100px"; 
+    } else {
+      navbar.style.top = "0"; 
+    }
+
+    lastScrollTop = scrollTop;
+  });
+</script>
+
+</body>
+</html>

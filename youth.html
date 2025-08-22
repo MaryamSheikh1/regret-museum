@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Room Of Youth</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+      <link rel="icon" type="image/png" href="images/logoo-removebg-preview.png">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+   
+      color: #fff;
+      text-align: center;
+      overflow-x: hidden;
+      padding-top: 60px;
+    }
+
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      filter: brightness(0.3);
+    }
+ .navbar-container {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 1400px;
+      z-index: 1000;
+      animation: ribbonOpen 2.2s ease forwards;
+      opacity: 0;
+      font-family: 'Cormorant Garamond', serif;
+    }
+#navbar {
+  transition: top 0.4s ease-in-out;
+}
+
+    @keyframes ribbonOpen {
+      0% {
+        width: 0;
+        opacity: 0;
+        clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
+      }
+      100% {
+        width: 100%;
+        opacity: 1;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      }
+    }
+
+    .navbar {
+      background: linear-gradient(to right, rgba(255, 221, 153, 0.18) 15%, rgba(3, 3, 3, 0.85));
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 6px 20px rgba(255,255,255,0.05);
+      height: 70px;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .logo img {
+      height: 120px;
+      width: 200px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+    }
+
+    .nav-links a {
+      color: #e8e8e8;
+      text-decoration: none;
+      font-size: 20px;
+      position: relative;
+      transition: all 0.4s ease;
+      letter-spacing: 1px;
+    }
+
+    .nav-links a:hover {
+      color: #ffdd99;
+      text-shadow: 0 0 6px #ccc, 0 0 12px #bbb, 0 0 18px #aaa, 0 0 25px rgba(255, 255, 255, 0.3);
+      transform: scale(1.12) translateY(-2px);
+    }
+
+    .icon {
+      font-size: 22px;
+      color: #ddd;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .icon:hover {
+      color: #ffdd99;
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 0 10px  #ffdd99;
+    }
+
+  
+    .chatbot {
+      position: fixed;
+      bottom: 80px;
+      right: 25px;
+      width: 300px;
+      max-height: 400px;
+      background: #1a1a1a;
+      color: #eee;
+      border: 1px solid #605f5e;
+      border-radius: 10px;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 0 15px #605f5e;
+      z-index: 9999;
+      font-family: 'Georgia', serif;
+    }
+
+    .chat-header {
+      padding: 10px;
+      background: #605f5e;
+      font-weight: bold;
+      text-align: center;
+      font-style: italic;
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #444;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 8px;
+      background: #111;
+      color: white;
+      border: none;
+      outline: none;
+    }
+
+    .chat-input button {
+      background: #605f5e;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .user-msg, .bot-msg {
+      margin: 5px 0;
+      padding: 6px 10px;
+      border-radius: 6px;
+      max-width: 85%;
+    }
+
+    .user-msg {
+      background: #2e2e2e;
+      align-self: flex-end;
+      color: #ccc;
+      text-align: right;
+    }
+
+    .bot-msg {
+      background: #333;
+      align-self: flex-start;
+      color: #eee;
+      font-style: italic;
+    }
+
+    .fade-in-btn {
+      opacity: 0;
+      animation: fadeInButton 2s ease 4s forwards;
+    }
+
+    @keyframes fadeInButton {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .menu-toggle {
+      display: none;
+    }
+
+  @media (max-width: 768px) {
+  .navbar {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 7px;
+  }
+
+  .logo {
+    width: 0px;
+  }
+
+  .logo img {
+    height: 55px;
+    width: 100px;
+  }
+
+  .nav-links {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 10px 10px 0 10px;
+    background: transparent;
+    position: static;
+    width: auto;
+    box-shadow: none;
+  }
+
+  .nav-links a {
+    font-size: 10px;
+    text-align: center;
+  }
+
+  .desktop-chat {
+    display: none;
+  }
+
+  #mobileChat {
+    display: block;
+  }
+
+ 
+  .navbar {
+    height: 50px;
+  }
+
+  .icon {
+    font-size: 16px;
+    padding: 5px 8px;
+  }
+}
+
+  @media (min-width: 769px) {
+    #mobileChat {
+      display: none;
+    }
+   
+  }
+  
+.heading {
+  font-style: bold;
+  color: #ffdd99;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px #ffdd99, 0 0 18px #ffcc88;
+  margin: 20px 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px;
+   animation: titleGlow 1s ease-out 1s forwards;
+  opacity: 0;
+}
+@keyframes titleGlow {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+    text-shadow: none;
+  }
+  50% {
+    opacity: 0.6;
+    text-shadow: 0 0 10px #ffdd99;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    text-shadow: 0 0 12px #ffcc88, 0 0 20px #ffdd99;
+  }
+}
+
+    .shelf {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .book {
+      width: 150px;
+      height: 200px;
+      margin: auto;
+      position: relative;
+      perspective: 1000px;
+      transition: transform 0.6s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      border-radius: 10px;
+    }
+
+    .book.open {
+      transform: rotateZ(-10deg);
+    }
+
+    .cover {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transform-origin: left;
+      transition: transform 1s ease;
+      z-index: 2;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(255,255,255,0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .cover img {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+    }
+
+    .page {
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fffde7;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      font-style: italic;
+      opacity: 0;
+      transition: opacity 1s ease;
+      backdrop-filter: blur(3px);
+       text-shadow: 0 0 8px #ffdd99, 0 0 18px #ffcc88;
+    }
+
+    .book.open .cover {
+      transform: rotateY(-160deg);
+    }
+
+    .book.open .page {
+      opacity: 1;
+    }
+
+    .message {
+      margin-top: 40px;
+      font-size: 18px;
+      font-style: italic;
+      color: #f0eaea;
+       text-shadow: 0 0 8px #ffdd99, 0 0 18px #ffcc88;
+    }
+
+    .btn-group {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+ .btn {
+  padding: 10px 22px;
+  font-size: 15px;
+  border: none;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffddcc;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 221, 153, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 221, 153, 0.1), 0 0 10px rgba(255, 221, 153, 0.15);
+  cursor: pointer;
+  transition: all 0.35s ease;
+  text-decoration: none;
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 0.5px;
+    text-shadow: 0 0 8px #ffdd99, 0 0 18px #ffcc88;
+}
+
+.btn:hover {
+  transform: scale(1.08);
+  background: rgba(255, 221, 153, 0.15);
+  box-shadow: 0 0 20px rgba(255, 221, 153, 0.4), 0 0 35px rgba(255, 204, 153, 0.3);
+  color: #fff6e6;
+}
+@keyframes fadeUpFooter {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+ footer {
+  padding: 20px 40px;
+  background: linear-gradient(to right, rgba(255, 221, 153, 0.18) 15%, rgba(3, 3, 3, 0.85));
+  color: #e8e8e8;
+  font-size: 15px;
+
+  text-align: center;
+  box-shadow: 0 -6px 20px rgba(255,255,255,0.05);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  opacity: 0;
+  animation: fadeUpFooter 1s ease-out 1s forwards;
+}
+
+footer em {
+  display: block;
+  margin-top: 5px;
+  color: #f3e8d3;
+  font-size: 16px;
+  text-shadow: 0 0 5px #ffcc88;
+}
+
+    @media (max-width: 900px) {
+      .shelf {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+    
+    }
+
+    @media (max-width: 600px) {
+      .shelf {
+        grid-template-columns: 1fr;
+      }
+
+      .book {
+        width: 140px;
+        height: 190px;
+      }
+
+    }
+  </style>
+</head>
+<body>
+
+<video autoplay muted loop id="bg-video">
+  <source src="images/room video (2).mp4" type="video/mp4" />
+</video>
+ <div class="navbar-container" id="navbar">
+    <div class="navbar">
+     <div class="logo">
+  <a href="index.html"> 
+    <img src="images/logoo-removebg-preview.png" alt="Logo" />
+  </a>
+</div>
+
+      <div class="nav-links" id="navLinks">
+         <div class="menu-toggle" id="menuToggle">☰</div>
+        <a href="./index.html">HOME</a>
+        <a href="./about.html">ABOUT</a>
+        <a href="./contact.html">CONTACT</a>
+       <a href="#" id="mobileChat" class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 64 64" width="28" height="28">
+            <path d="M32 6c-14.3 0-26 11.7-26 26v10c0 2.2 1.8 4 4 4h6v-14H10v-0.1C10 19.6 19.6 10 32 10s22 9.6 22 21.9V32h-6v14h6c2.2 0 4-1.8 4-4V32c0-14.3-11.7-26-26-26z"/>
+            <circle cx="24" cy="36" r="3" fill="#fff"/>
+            <circle cx="40" cy="36" r="3" fill="#fff"/>
+            <path d="M28 46c2.2 2.2 5.8 2.2 8 0" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
+        </a>
+      </div>
+     
+      <div class="icon desktop-chat" id="chatIcon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 64 64" width="28" height="28">
+          <path d="M32 6c-14.3 0-26 11.7-26 26v10c0 2.2 1.8 4 4 4h6v-14H10v-0.1C10 19.6 19.6 10 32 10s22 9.6 22 21.9V32h-6v14h6c2.2 0 4-1.8 4-4V32c0-14.3-11.7-26-26-26z"/>
+          <circle cx="24" cy="36" r="3" fill="#fff"/>
+          <circle cx="40" cy="36" r="3" fill="#fff"/>
+          <path d="M28 46c2.2 2.2 5.8 2.2 8 0" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="chatbot" id="chatbot">
+    <div class="chat-header">🤖 Regret Assistant</div>
+    <div class="chat-body" id="chatBody">
+      <div class="bot-msg">Welcome to the Regret Museum. What weighs on your soul today?</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Share a thought...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+<br> 
+<h1 class="heading">Room Of Youth</h1>
+
+<div class="shelf">
+
+  <div class="book" onclick="toggleBook(this)">
+    <div class="cover"><img src="images/book image.jpeg"></div>
+    <div class="page"><p>"We were too young to understand time was running."</p></div>
+  </div>
+  <div class="book" onclick="toggleBook(this)">
+    <div class="cover"><img src="images/book image.jpeg"></div>
+    <div class="page"><p>"Dreams faded faster than courage could grow."</p></div>
+  </div>
+  <div class="book" onclick="toggleBook(this)">
+    <div class="cover"><img src="images/book image.jpeg"></div>
+    <div class="page"><p>"We laughed louder to silence the emptiness."</p></div>
+  </div>
+  <div class="book" onclick="toggleBook(this)">
+    <div class="cover"><img src="images/book image.jpeg"></div>
+    <div class="page"><p>"In our race to grow up, we forgot to live."</p></div>
+  </div>
+  <div class="book" onclick="toggleBook(this)">
+    <div class="cover"><img src="images/book image.jpeg"></div>
+    <div class="page"><p>"Regret comes softly when youth ends suddenly."</p></div>
+  </div>
+  <div class="book" onclick="toggleBook(this)">
+    <div class="cover"><img src="images/book image.jpeg"></div>
+    <div class="page"><p>"We thought we were invincible, but we were just invisible."</p></div>
+  </div>
+  <div class="book" onclick="toggleBook(this)">
+    <div class="cover"><img src="images/book image.jpeg"></div>
+    <div class="page"><p>"The chances we didn’t take haunt the loudest."</p></div>
+  </div>
+  <div class="book" onclick="toggleBook(this)">
+    <div class="cover"><img src="images/book image.jpeg"></div>
+    <div class="page"><p>"We buried feelings in jokes we never laughed at."</p></div>
+  </div>
+  <div class="book" onclick="toggleBook(this)">
+    <div class="cover"><img src="images/book image.jpeg"></div>
+    <div class="page"><p>"Memories became regrets the moment we let them go."</p></div>
+  </div>
+</div>
+
+<div class="message">
+  "Carry the silence with you... Explore the books that never got their ending."
+</div>
+
+<div class="btn-group">
+  <a href="./young.html" class="btn">Buy This Book</a>
+  <a href="map.html" class="btn">Back to the Museum</a>
+</div>
+<br><br>
+<footer>
+  <p><em>“I was small_but the regret was not.”</em></p>
+</footer>
+
+
+<script>
+function toggleBook(book) {
+  book.classList.toggle("open");
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+      const menuToggle = document.getElementById("menuToggle");
+      const navLinks = document.getElementById("navLinks");
+
+      menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+      });
+
+      const chatbot = document.getElementById("chatbot");
+      const chatIcon = document.getElementById("chatIcon");
+      const chatBody = document.getElementById("chatBody");
+      const userInput = document.getElementById("userInput");
+      const mobileChat = document.getElementById("mobileChat");
+
+      chatIcon.addEventListener("click", () => {
+        chatbot.style.display = chatbot.style.display === "flex" ? "none" : "flex";
+      });
+
+      mobileChat.addEventListener("click", (e) => {
+        e.preventDefault();
+        chatbot.style.display = chatbot.style.display === "flex" ? "none" : "flex";
+        navLinks.classList.remove("active");
+      });
+
+      window.sendMessage = function () {
+        const msg = userInput.value.trim();
+        if (!msg) return;
+
+        const userMsg = document.createElement("div");
+        userMsg.className = "user-msg";
+        userMsg.textContent = msg;
+        chatBody.appendChild(userMsg);
+        userInput.value = "";
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        setTimeout(() => {
+          const reply = getBotReply(msg);
+          const botMsg = document.createElement("div");
+          botMsg.className = "bot-msg";
+          botMsg.textContent = reply;
+          chatBody.appendChild(botMsg);
+          chatBody.scrollTop = chatBody.scrollHeight;
+        }, 700);
+      }
+
+      function getBotReply(msg) {
+        const lower = msg.toLowerCase();
+        if (lower.includes("regret")) return "Some regrets echo louder than others.";
+        if (lower.includes("life")) return "Life is a fading chapter, full of silent pages.";
+        if (lower.includes("love")) return "Love in youth burns bright, but often leaves ashes.";
+        if (lower.includes("dream")) return "Dreams often outgrow the people who dreamed them.";
+        if (lower.includes("lost") || lower.includes("pain")) return "Sometimes we lose ourselves trying to find others.";
+        if (lower.includes("help")) return "I'm here. Whisper anything you couldn't say back then.";
+        return "Every whisper matters in the museum of memories.";
+      }
+    });
+ let lastScrollTop = 0;
+  const navbar = document.getElementById("navbar");
+
+  window.addEventListener("scroll", function () {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (scrollTop > lastScrollTop) {
+      navbar.style.top = "-100px"; 
+    } else {
+      navbar.style.top = "0"; 
+    }
+
+    lastScrollTop = scrollTop;
+  });
+</script>
+
+</body>
+</html>
+
